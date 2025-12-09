@@ -1,0 +1,129 @@
+/* General body styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f4f8;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Headings */
+h1, h2, h3 {
+    text-align: center;
+    color: #1e2a38;
+}
+
+/* Form styling */
+form {
+    background: #ffffff;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+form input {
+    width: 100%;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+form input:focus {
+    border-color: #007BFF;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0,123,255,0.3);
+}
+
+form button {
+    background: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: 0.3s;
+}
+
+form button:hover {
+    background: #0056b3;
+}
+
+/* Search bar styling */
+#search-input {
+    display: block;
+    width: 50%;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+/* Movie list styling */
+#movie-list {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#movie-list div {
+    background: #ffffff;
+    padding: 15px 20px;
+    margin: 10px 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#movie-list p {
+    margin: 0;
+    font-weight: 500;
+}
+
+#movie-list button {
+    margin-left: 10px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+#movie-list button:first-of-type {
+    background: #ffc107;
+    color: #fff;
+}
+
+#movie-list button:first-of-type:hover {
+    background: #e0a800;
+}
+
+#movie-list button:last-of-type {
+    background: #dc3545;
+    color: #fff;
+}
+
+#movie-list button:last-of-type:hover {
+    background: #a71d2a;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    form, #movie-list {
+        width: 90%;
+    }
+
+    #search-input {
+        width: 90%;
+    }
+}
