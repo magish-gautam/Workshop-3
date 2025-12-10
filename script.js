@@ -1,15 +1,23 @@
-// In-memory movie list
-let allMovies = [
-    { id: "2", title: "Pulp Fiction", genre: "Crime", year: 1994 },
-    { id: "3", title: "Dune", genre: "Sci-Fi", year: 2021 },
-    { id: "40c4", title: "Dhurandar", genre: "Spy action thriller", year: 2025 },
-    { id: "42a9", title: "Uri The Surgical Strike", genre: "Army Action Thriller", year: 2019 },
-    { id: "4af2", title: "Theri", genre: "Action Thriller", year: 2016 }
-];
+const API_URL = "http://localhost:3000/movies";
+
+let allMovies = [];
 
 const movieListDiv = document.getElementById('movie-list');
 const searchInput = document.getElementById('search-input');
 const form = document.getElementById('add-movie-form');
+
+
+// Fetch movies from JSON Server
+function loadMovies() {
+    fetch(API_URL)
+        .then(res => res.json())
+        .then(data => {
+            allMovies = data;
+            renderMovies(allMovies);
+        })
+        .catch(err => console.error("Error loading movies:", err));
+}
+
 
 // Render movies to page
 function renderMovies(moviesToDisplay) {
@@ -31,8 +39,6 @@ function renderMovies(moviesToDisplay) {
     });
 }
 
-// Initial render
-renderMovies(allMovies);
 
 // Search functionality
 searchInput.addEventListener('input', () => {
@@ -44,25 +50,32 @@ searchInput.addEventListener('input', () => {
     renderMovies(filtered);
 });
 
-// Add movie
+
+// Add movie to JSON Server
 form.addEventListener('submit', e => {
     e.preventDefault();
 
     const newMovie = {
-        id: crypto.randomUUID(), // unique string ID
         title: document.getElementById('title').value,
         genre: document.getElementById('genre').value,
         year: parseInt(document.getElementById('year').value)
     };
 
-    allMovies.push(newMovie);
-    form.reset();
-    renderMovies(allMovies);
+    fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newMovie)
+    })
+    .then(() => {
+        form.reset();
+        loadMovies();
+    });
 });
+
 
 // Edit movie
 function editMoviePrompt(id) {
-    const movie = allMovies.find(m => m.id === id);
+    const movie = allMovies.find(m => m.id == id);
     if (!movie) return;
 
     const newTitle = prompt("New Title:", movie.title);
@@ -71,21 +84,29 @@ function editMoviePrompt(id) {
 
     if (!newTitle || !newYear || !newGenre) return;
 
-    const parsedYear = parseInt(newYear);
-    if (isNaN(parsedYear)) {
-        alert("Year must be a number");
-        return;
-    }
+    const updatedMovie = {
+        title: newTitle,
+        year: parseInt(newYear),
+        genre: newGenre
+    };
 
-    movie.title = newTitle;
-    movie.year = parsedYear;
-    movie.genre = newGenre;
-
-    renderMovies(allMovies);
+    fetch(`${API_URL}/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedMovie)
+    })
+    .then(() => loadMovies());
 }
+
 
 // Delete movie
 function deleteMovie(id) {
-    allMovies = allMovies.filter(m => m.id !== id);
-    renderMovies(allMovies);
+    fetch(`${API_URL}/${id}`, {
+        method: "DELETE"
+    })
+    .then(() => loadMovies());
 }
+
+
+// Load movies on page start
+loadMovies();
